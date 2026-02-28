@@ -1,6 +1,5 @@
 package utils;
 
-import io.github.bonigarcia.wdm.WebDriverManager;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
@@ -10,33 +9,27 @@ import org.openqa.selenium.safari.SafariDriver;
 
 public class BrowserFactory {
 
-    public static WebDriver startBrowser(String browserName, String url) {
+    WebDriver driver = null;
 
-        WebDriver driver;
+    public WebDriver startBrowser(String browserName, String url) {
 
-        switch (browserName.toLowerCase()) {
+        if (browserName.equalsIgnoreCase("chrome")) {
 
-            case "chrome":
-                WebDriverManager.chromedriver().setup();
-                ChromeOptions options = new ChromeOptions();
-                options.addArguments("--incognito");
-                driver = new ChromeDriver(options);
-                break;
+            ChromeOptions options = new ChromeOptions();
+            options.addArguments("--incognito");
+            driver = new ChromeDriver();   // Selenium Manager handles driver automatically
 
-            case "firefox":
-                WebDriverManager.firefoxdriver().setup();
-                driver = new FirefoxDriver();
-                break;
+        } else if (browserName.equalsIgnoreCase("firefox")) {
 
-            case "safari":
-                driver = new SafariDriver();
-                break;
+            driver = new FirefoxDriver();
 
-            case "edge":
-            default:
-                WebDriverManager.edgedriver().setup();
-                driver = new EdgeDriver();
-                break;
+        } else if (browserName.equalsIgnoreCase("safari")) {
+
+            driver = new SafariDriver();
+
+        } else {
+
+            driver = new EdgeDriver();
         }
 
         driver.manage().window().maximize();

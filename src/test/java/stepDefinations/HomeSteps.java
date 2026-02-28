@@ -3,27 +3,22 @@ package stepDefinations;
 import Pages.HomePage;
 import Pages.LoginPage;
 import io.cucumber.java.en.*;
-import org.openqa.selenium.WebDriver;
 import org.testng.Assert;
-import utils.BrowserFactory;
+import utils.DriverManager;
 
 public class HomeSteps {
 
-    WebDriver driver;
-    BrowserFactory factory;
     HomePage homePage;
     LoginPage loginPage;
-
-    String url = "https://ndosisimplifiedautomation.vercel.app/";
 
     @Given("User launches the application")
     public void user_launches_the_application() {
 
-        factory = new BrowserFactory();
-        driver = factory.startBrowser("chrome", url);
+        // 🔥 Open your application URL here
+        DriverManager.getDriver().get("https://ndosisimplifiedautomation.vercel.app/");
 
-        homePage = new HomePage(driver);
-        loginPage = new LoginPage(driver);
+        homePage = new HomePage(DriverManager.getDriver());
+        loginPage = new LoginPage(DriverManager.getDriver());
     }
 
     @When("User clicks Learn dropdown")
@@ -39,12 +34,10 @@ public class HomeSteps {
     @Then("Login page should be displayed")
     public void login_page_should_be_displayed() {
         Assert.assertTrue(loginPage.isLoginPageDisplayed());
-        driver.quit();
     }
 
     @Then("Learning Materials should not be visible")
     public void learning_materials_should_not_be_visible() {
         Assert.assertFalse(homePage.isLearningMaterialsVisible());
-        driver.quit();
     }
 }

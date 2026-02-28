@@ -1,23 +1,27 @@
 package utils;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.chrome.ChromeDriver;
 
 public class DriverManager {
 
-    private static ThreadLocal<WebDriver> driver = new ThreadLocal<>();
+    private static WebDriver driver;
 
-    public static void setDriver(WebDriver webDriver) {
-        driver.set(webDriver);
-    }
+    // 🔥 Debug flag
+    public static boolean debug = true;
 
     public static WebDriver getDriver() {
-        return driver.get();
+        if (driver == null) {
+            driver = new ChromeDriver();
+            driver.manage().window().maximize();
+        }
+        return driver;
     }
 
     public static void quitDriver() {
-        if (driver.get() != null) {
-            driver.get().quit();
-            driver.remove();
+        if (driver != null) {
+            driver.quit();
+            driver = null;
         }
     }
 }
